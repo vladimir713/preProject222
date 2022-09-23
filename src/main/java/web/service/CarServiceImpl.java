@@ -1,6 +1,9 @@
 package web.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import web.dao.CarDao;
+import web.dao.CarDaoImpl;
 import web.model.Car;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,24 +11,20 @@ import java.util.stream.Collectors;
 
 @Component
 public class CarServiceImpl implements CarService {
-    private static int CARS_COUNT;
-    private List<Car> cars;
-    {
-        cars = new ArrayList<>();
-        cars.add(new Car(++CARS_COUNT, "Opel", "Corsa", "A001BB"));
-        cars.add(new Car(++CARS_COUNT, "Mersedes Benz", "600", "E666AA"));
-        cars.add(new Car(++CARS_COUNT, "Zapor", "Ushastyi", "A999MO"));
-        cars.add(new Car(++CARS_COUNT, "UAZ", "Bukhanka", "O123AD"));
-        cars.add(new Car(++CARS_COUNT, "Kover", "Samolet", "B/N"));
+
+    private CarDao carDao;
+
+    public CarServiceImpl(CarDao carDao) {
+        this.carDao = carDao;
     }
+
     @Override
     public List<Car> index() {
-
-        return cars;
+        return carDao.index();
     }
+
     @Override
     public List<Car> show(int count) {
-
-        return cars.stream().limit(count).collect(Collectors.toList());
+        return carDao.show(count);
     }
 }
